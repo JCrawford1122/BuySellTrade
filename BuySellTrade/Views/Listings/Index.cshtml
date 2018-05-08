@@ -1,0 +1,106 @@
+﻿@model IEnumerable<BuySellTrade.Models.Listing>
+
+@{
+    ViewBag.Title = "Index";
+
+}
+@Html.Raw(ViewBag.Test);
+
+<h2>Buy, Sell, Trade! Listings</h2>
+
+<h5>Search listings by category or title</h5>
+<p>
+    @* Form for searching listings by category and/or title.
+        The title search uses AJAX autocomplete.
+    *@
+    <div class="form-horizontal">
+        @using (Html.BeginForm("Index", "Listings", FormMethod.Get))
+        {
+            <div class="form-group">
+                @Html.Label("Search Category", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Category", null, htmlAttributes: new { @class = "form-control" })
+
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Search Titles", htmlAttributes: new { @class="control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.TextBox("Title", "", htmlAttributes: new { @class = "form-control", data_autocomplete_source = Url.Action("TitleSearch") })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Search" class="btn btn-default" />
+                </div>
+            </div>
+        }
+    </div>
+</p>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @* Links for Edit and Delete are displayed depending
+                on the User that is logged in. The Admin User can 
+                Delete any users Listing. Only the user that created
+                the listing can edit.
+            *@
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @if (item.Email == User.Identity.Name)
+            {
+                @Html.ActionLink("Edit |", "Edit", new { id = item.Id })
+            }
+            @if (item.Email == User.Identity.Name || User.IsInRole("Admin"))
+            {
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            }
+        </td>
+    </tr>
+}
+
+</table>
+
+@section Scripts {
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryui")
+    <script src="~/Scripts/App/BuySellTradeScripts.js"></script>
+}

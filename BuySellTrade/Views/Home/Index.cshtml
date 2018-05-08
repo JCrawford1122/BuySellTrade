@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Buy, Sell, Trade!</h1>
+    <p class="lead">The new way to buy and sell.</p>
+   
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            Create a free account and begin listing and purchasing items today.
+        </p>
+        @Html.ActionLink("Sign up", "Register", "Account", new { area = "" }, new { @class = "btn btn-primary" })
+    </div>
+    <div class="col-md-4">
+        <h2>Browse Items</h2>
+        <p>Browse the listings and find the items you need today.</p>
+        @Html.ActionLink("Browse Listings", "Index", "Listings", new { area = "" }, new { @class = "btn btn-primary" })
+    </div>
+    <div class="col-md-4">
+        <h2>List an Item</h2>
+        <p>Have some stuff you don't need anymore? List your items here and make some money.</p>
+        @Html.ActionLink("List an Item", "Create", "Listings", new { area = "" }, new { @class = "btn btn-primary" })
+    </div>
+</div>

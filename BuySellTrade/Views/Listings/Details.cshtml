@@ -1,0 +1,82 @@
+﻿@model BuySellTrade.Models.Listing
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Listing Details for @Model.Title</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Photo)
+        </dt>
+
+        <dd>
+            @* Only display the image if one exists in the model*@
+            @if (Model.Photo != null)
+            {
+            <img src="data:image;base64,@System.Convert.ToBase64String(Model.Photo)" style="max-width: 300px;" />
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+    </dl>
+
+</div>
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<div id="listings">
+    @Ajax.ActionLink("View other listings from " + Model.Email,
+        "SellerSearch", null,
+        new { Email = Model.Email, Id = Model.Id },
+        new AjaxOptions
+        {
+            UpdateTargetId = "listings",
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "GET"
+        },
+        new { @class = "btn btn-primary" })
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+}
